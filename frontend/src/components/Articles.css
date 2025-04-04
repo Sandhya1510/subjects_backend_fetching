@@ -1,0 +1,100 @@
+/* General Page Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f3e4e4;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  
+  /* Container */
+  div {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Title */
+  h2 {
+    color: #333;
+    text-align: center;
+  }
+  
+  /* Input Fields */
+  input, textarea {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  /* Textarea */
+  textarea {
+    height: 100px;
+    resize: vertical;
+  }
+  
+  /* Button Styling */
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Article List */
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  li {
+    background: #fff;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+  
+ 
+  /* Article Text */
+  p {
+    margin: 5px 0;
+    font-size: 16px;
+  }
+  
+  /* Delete Button */
+  li button {
+    background-color: #dc3545;
+    position: absolute;
+    right: 15px;
+    top: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  
+  li button:hover {
+    background-color: #a71d2a;
+  }
+  
+  /* Loading & Error Messages */
+  p[style*="color: red"] {
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  
