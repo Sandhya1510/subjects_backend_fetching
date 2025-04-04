@@ -303,7 +303,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Articles.css"; 
+import "./Articles.css";
 
 const Articles = () => {
   const { topicName } = useParams();
@@ -313,6 +313,8 @@ const Articles = () => {
   const [editId, setEditId] = useState(null);
   const [editArticle, setEditArticle] = useState({ title: "", subjectName: "", description: "" });
   const navigate = useNavigate();
+  const [showDescriptionInput, setShowDescriptionInput] = useState(false);
+  const [newDescription, setNewDescription] = useState("");
 
   useEffect(() => {
     fetchArticles();
@@ -327,16 +329,18 @@ const Articles = () => {
     }
   };
 
-  const handleAddClick = () => {
-    setShowInputs(true);
-  };
+  // const handleAddClick = () => {
+  //   setShowInputs(true);
+  // };
 
   const handleAddArticle = async () => {
     if (!newArticle.title.trim() || !newArticle.subjectName.trim() || !newArticle.description.trim()) return;
 
     try {
       await axios.post("http://localhost:5000/articles", { ...newArticle, topicName });
-      setNewArticle({ title: "", subjectName: "", description: "" });
+      // setNewArticle({ title: "", subjectName: "", description: "" });
+      setNewArticle(" ");
+      setShowDescriptionInput(false);
       setShowInputs(false);
       fetchArticles();
     } catch (error) {
@@ -344,9 +348,14 @@ const Articles = () => {
     }
   };
 
+  // const handleCancelAdd = () => {
+  //   setShowInputs(false);
+  //   setNewArticle({ title: "", subjectName: "", description: "" });
+  // };
   const handleCancelAdd = () => {
     setShowInputs(false);
-    setNewArticle({ title: "", subjectName: "", description: "" });
+    setNewArticle(" ");
+    setShowDescriptionInput(false);
   };
 
   const handleDeleteArticle = async (id) => {
@@ -387,9 +396,41 @@ const Articles = () => {
     <div className="container">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <h2>Articles for Topic: {topicName}</h2>
-        <button onClick={() => navigate(-1)}>Go Back</button>
+        <div className="add-article">
+          <button onClick={() => setShowDescriptionInput(true)}>Add</button>
+          {showDescriptionInput && (
+            <div className="modal-overlay">
+              <div className="modal-content">
+                <h3>Add New Article</h3>
+                <input
+                  type="text"
+                  placeholder="Title"
+                  value={newArticle.title}
+                  onChange={(e) => setNewArticle({ ...newArticle, title: e.target.value })}
+                />
+                <input
+                  type="text"
+                  placeholder="Subject"
+                  value={newArticle.subjectName}
+                  onChange={(e) => setNewArticle({ ...newArticle, subjectName: e.target.value })}
+                />
+                <textarea
+                  placeholder="Description"
+                  value={newArticle.description}
+                  onChange={(e) => setNewArticle({ ...newArticle, description: e.target.value })}
+                  rows="4"
+                />
+                <div className="confirmation-buttons">
+                  <button onClick={handleAddArticle}>Confirm Add</button>
+                  <button className="cancel-btn" onClick={handleCancelAdd}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-
 
       <table className="articles-table">
         <thead>
@@ -453,7 +494,7 @@ const Articles = () => {
           )}
         </tbody>
       </table>
-      <div className="add-article">
+      {/* <div className="add-article">
         {showInputs && (
           <>
             <input
@@ -483,7 +524,7 @@ const Articles = () => {
           </>
         )}
         {!showInputs && <button onClick={handleAddClick}>Add</button>}
-      </div>
+      </div> */}
     </div>
   );
 };

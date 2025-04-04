@@ -161,16 +161,73 @@ const Subjects = () => {
     setEditSubjectName("");
   };
 
-
   return (
     <div className="container">
-      <h2>Subjects</h2>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h2>Subjects</h2>
+        {/* <div className="add-subject">
+          {showDescriptionInput && (
+            <>
+              <input
+                type="text"
+                value={newSubject}
+                onChange={(e) => setNewSubject(e.target.value)}
+                placeholder="New Subject"
+              />
+              <textarea
+                value={newDescription}
+                onChange={(e) => setNewDescription(e.target.value)}
+                placeholder="Enter subject description"
+                rows="4"
+              />
+              <div className="confirmation-buttons">
+                <button onClick={handleAddSubject}>Confirm Add</button>
+                <button className="cancel-btn" onClick={handleCancelAdd}>Cancel</button>
+              </div>
+            </>
+          )}
+
+          {!showDescriptionInput && (
+            <button onClick={handleAddSubject}>Add</button>
+          )}
+        </div> */}
+
+        <div className="add-subject">
+          <button onClick={() => setShowDescriptionInput(true)}>Add</button>
+          {showDescriptionInput && (
+            <div className="modal-overlay">
+              <div className="modal-content">
+                <h3>Add New Subject</h3>
+                <input
+                  type="text"
+                  value={newSubject}
+                  onChange={(e) => setNewSubject(e.target.value)}
+                  placeholder="New Subject"
+                />
+                <textarea
+                  value={newDescription}
+                  onChange={(e) => setNewDescription(e.target.value)}
+                  placeholder="Enter subject description"
+                  rows="4"
+                />
+                <div className="confirmation-buttons">
+                  <button onClick={handleAddSubject}>Confirm Add</button>
+                  <button className="cancel-btn" onClick={handleCancelAdd}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
 
       <table className="subjects-table">
         <thead>
           <tr>
             <th>S.No</th>
             <th>Subject Name</th>
+            <th>Description</th>
             <th>Created Date</th>
             <th>Actions</th>
           </tr>
@@ -201,6 +258,7 @@ const Subjects = () => {
                   </span>
                 )}
               </td>
+              <td>{subject.description || "-"}</td>
               <td>{new Date(subject.createdAt).toLocaleDateString()}</td>
               <td>
                 {editId !== subject._id && (
@@ -220,32 +278,7 @@ const Subjects = () => {
         </tbody>
       </table>
 
-      <div className="add-subject">
-        {showDescriptionInput && (
-          <>
-            <input
-              type="text"
-              value={newSubject}
-              onChange={(e) => setNewSubject(e.target.value)}
-              placeholder="New Subject"
-            />
-            <textarea
-              value={newDescription}
-              onChange={(e) => setNewDescription(e.target.value)}
-              placeholder="Enter subject description"
-              rows="4"
-            />
-            <div className="confirmation-buttons">
-              <button onClick={handleAddSubject}>Confirm Add</button>
-              <button className="cancel-btn" onClick={handleCancelAdd}>Cancel</button>
-            </div>
-          </>
-        )}
 
-        {!showDescriptionInput && (
-          <button onClick={handleAddSubject}>Add</button>
-        )}
-      </div>
 
     </div>
   );

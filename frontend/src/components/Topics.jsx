@@ -199,7 +199,34 @@ const Topics = () => {
     <div className="container">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <h2>Topics for {subjectName}</h2>
-        <button onClick={() => navigate(-1)}>Go Back</button>
+        <div className="add-topic">
+          <button onClick={() => setShowDescriptionInput(true)}>Add</button>
+          {showDescriptionInput && (
+            <div className="modal-overlay">
+              <div className="modal-content">
+                <h3>Add New Topic</h3>
+                <input
+                  type="text"
+                  value={newTopic}
+                  onChange={(e) => setNewTopic(e.target.value)}
+                  placeholder="New Topic"
+                />
+                <textarea
+                  value={newDescription}
+                  onChange={(e) => setNewDescription(e.target.value)}
+                  placeholder="Enter topic description"
+                  rows="4"
+                />
+                <div className="confirmation-buttons">
+                  <button onClick={handleAddTopic}>Confirm Add</button>
+                  <button className="cancel-btn" onClick={handleCancelAdd}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
       <table className="topics-table">
         <thead>
@@ -264,35 +291,6 @@ const Topics = () => {
           )}
         </tbody>
       </table>
-
-      <div className="add-topic">
-        {showDescriptionInput && (
-          <>
-            <input
-              type="text"
-              value={newTopic}
-              onChange={(e) => setNewTopic(e.target.value)}
-              placeholder="New Topic"
-            />
-            <textarea
-              value={newDescription}
-              onChange={(e) => setNewDescription(e.target.value)}
-              placeholder="Enter topic description"
-              rows="4"
-            />
-            <div className="confirmation-buttons">
-              <button onClick={handleAddTopic}>Confirm Add</button>
-              <button className="cancel-btn" onClick={handleCancelAdd}>
-                Cancel
-              </button>
-            </div>
-          </>
-        )}
-
-        {!showDescriptionInput && (
-          <button onClick={handleAddTopic}>Add</button>
-        )}
-      </div>
 
     </div>
   );
