@@ -15,15 +15,15 @@ body, html {
 }
 
 /* Add Subject Section */
-.add-article {
+.add-topic {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-bottom: 30px;
 }
 
-.add-article input,
-.add-article textarea {
+.add-topic input,
+.add-topic textarea {
   width: 100%;
   padding: 10px;
   font-size: 16px;
@@ -32,7 +32,7 @@ body, html {
   border-radius: 4px;
 }
 
-.add-article button {
+.add-topic button {
   align-self: flex-start;
   padding: 10px 20px;
   background-color: #3498db;
@@ -44,34 +44,33 @@ body, html {
 }
 
 /* Table Styling */
-.articles-table {
+.topics-table {
   width: 100%;
   border-collapse: collapse;
   background-color: #fff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.articles-table th,
-.articles-table td {
+.topics-table th,
+.topics-table td {
   border: 1px solid #ddd;
   padding: 12px;
   text-align: left;
   vertical-align: top;
-  text-decoration: none;
 }
 
-.articles-table th {
+.topics-table th {
   background-color: #f0f0f0;
   font-weight: bold;
 }
 
-.article-link {
+.topic-link {
   color: #2c3e50;
   cursor: pointer;
 }
 
-.article-link :hover{
-  color: #0a0af8;
+.topic-link:hover{
+  color: rgb(13, 13, 246);
   cursor: pointer;
 }
 /* Buttons */
@@ -85,7 +84,7 @@ button {
   border-radius: 4px;
 }
 
-.article-btn {
+.topic-btn {
   background-color: #e74c3c;
 }
 
@@ -95,17 +94,17 @@ button {
 
 /* Responsive for small screens */
 @media (max-width: 768px) {
-  .add-article {
+  .add-topic {
     flex-direction: column;
   }
 
-  .articles-table th,
-  .articles-table td {
+  .topics-table th,
+  .topics-table td {
     font-size: 14px;
     padding: 8px;
   }
 
-  .add-article button {
+  .add-topic button {
     width: 100%;
   }
 }

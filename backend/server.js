@@ -27,6 +27,8 @@ mongoose.connection.once("open", () => {
 // Subject Schema
 const subjectSchema = new mongoose.Schema({
   subjectName: { type: String, required: true },
+  description: {type: String, required: true},
+  createdAt: { type: Date,default: Date.now}
 });
 
 const Subject = mongoose.model("Subjects", subjectSchema);
@@ -35,7 +37,9 @@ const Subject = mongoose.model("Subjects", subjectSchema);
 const topicSchema = new mongoose.Schema({
   // subjectId: { type: mongoose.Schema.Types.ObjectId, ref: "Subjects", required: true },
   topicName: { type: String, required: true },
-  subjectName: { type: String, required: true }
+  subjectName: { type: String, required: true },
+  description: {type: String, required: true},
+  createdAt: { type: Date,default: Date.now}
 });
 
 const Topic = mongoose.model("Topics", topicSchema);
@@ -44,9 +48,10 @@ const Topic = mongoose.model("Topics", topicSchema);
 const articleSchema = new mongoose.Schema({
   topicName: { type: mongoose.Schema.Types.ObjectId, ref: "Topics", required: true },
   title: { type: String, required: true },
-  content: { type: String, required: true },
+  description: { type: String, required: true },
   topicName: {type: String, required: true},
-  subjectName: {type: String, required: true}
+  subjectName: {type: String, required: true},
+  createdAt: { type: Date,default: Date.now}
 });
 
 const Article = mongoose.model("Articles", articleSchema);
@@ -70,18 +75,56 @@ app.get("/subjects", async (req, res) => {
   }
 });
 
+// app.post("/subjects", async (req, res) => {
+//   try {
+//     const { subjectName, description } = req.body;
+//     if (!subjectName || !description) return res.status(400).json({ error: "Subject name is required" });
+
+//     const newSubject = new Subject({ subjectName });
+//     await newSubject.save();
+//     res.status(201).json(newSubject);
+//   } catch (error) {
+//     res.status(500).json({ error: "Failed to add subject" });
+//   }
+// });
+
 app.post("/subjects", async (req, res) => {
   try {
-    const { subjectName } = req.body;
-    if (!subjectName) return res.status(400).json({ error: "Subject name is required" });
+    const { subjectName, description } = req.body;
 
-    const newSubject = new Subject({ subjectName });
+    if (!subjectName || !description) {
+      return res.status(400).json({ error: "Subject name and description are required" });
+    }
+
+    const newSubject = new Subject({ subjectName, description });
     await newSubject.save();
     res.status(201).json(newSubject);
   } catch (error) {
+    console.error("Error adding subject:", error); // Helpful for debugging
     res.status(500).json({ error: "Failed to add subject" });
   }
 });
+
+app.put("/subjects/:id", async (req, res) => {
+  try {
+    const { subjectName, description } = req.body;
+
+    const updatedSubject = await Subject.findByIdAndUpdate(
+      req.params.id,
+      { subjectName, description },
+      { new: true }
+    );
+
+    if (!updatedSubject) {
+      return res.status(404).json({ error: "Subject not found" });
+    }
+
+    res.json(updatedSubject);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update subject" });
+  }
+});
+
 
 app.delete("/subjects/:id", async (req, res) => {
   try {
@@ -124,50 +167,44 @@ app.get("/topics/:subjectName", async (req, res) => {
   }
 });
 
-
-// app.post("/topics", async (req, res) => {
-//   try {
-//     const { subjectName, topicName } = req.body;
-//     if (!subjectName || !topicName) return res.status(400).json({ error: "Subject name and topic name are required" });
-
-//     const newTopic = new Topic({ subjectName, topicName });
-//     await newTopic.save();
-//     res.status(201).json(newTopic);
-//   } catch (error) {
-//     res.status(500).json({ error: "Failed to add topic" });
-//   }
-// });
-
-
-// adjust path as needed
-
-
 app.post("/topics", async (req, res) => {
   try {
-    const { topicName, subjectName } = req.body;
+    const { topicName, description, subjectName } = req.body;
 
-    // Find subject
-    const subject = await Subject.findOne({ subjectName });
-    if (!subject) {
-      return res.status(404).json({ message: "Subject not found" });
+    if (!topicName || !description || !subjectName) {
+      return res.status(400).json({ error: "Topic name, description, and subject name are required" });
     }
 
-    // Create topic
-    const newTopic = new Topic({
-      topicName,
-      subjectId: subject._id,
-      subjectName // optional, only if you're keeping it in schema
-    });
-
+    const newTopic = new Topic({ topicName, description, subjectName });
     await newTopic.save();
-
     res.status(201).json(newTopic);
   } catch (error) {
     console.error("Error adding topic:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ error: "Failed to add topic" });
   }
 });
 
+
+
+app.put("/topics/:id", async (req, res) => {
+  try {
+    const { topicName, subjectName, description } = req.body;
+
+    const updatedTopic = await Topic.findByIdAndUpdate(
+      req.params.id,
+      { topicName, subjectName, description },
+      { new: true }
+    );
+
+    if (!updatedTopic) {
+      return res.status(404).json({ error: "Topic not found" });
+    }
+
+    res.json(updatedTopic);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update topic" });
+  }
+});
 
 app.delete("/topics/:id", async (req, res) => {
   try {
@@ -182,29 +219,13 @@ app.delete("/topics/:id", async (req, res) => {
 });
 
 // CRUD for Articles
-// app.get("/articles", (req, res) => {
-//   const { subject, topic } = req.query;
-
-//   if (!subject || !topic) {
-//       return res.status(400).json({ message: "Missing subject or topic" });
-//   }
-
-//   // Filter articles based on subjectName and topicName
-//   const article = articles.find(a => a.subjectName === subject && a.topicName === topic);
-
-//   if (!article) {
-//       return res.status(404).json({ message: "Article not found" });
-//   }
-
-//   res.json(article);
-// });
 
 app.get("/articles", async (req, res) => {
   const { topicName } = req.query;
   try {
     const articles = topicName
-      ? await Article.find({ topicName }) // Filter by topicName if provided
-      : await Article.find(); // Return all articles if no filter
+      ? await Article.find({ topicName }) 
+      : await Article.find(); 
 
     res.json(articles);
   } catch (error) {
@@ -212,9 +233,23 @@ app.get("/articles", async (req, res) => {
   }
 }); 
 
-app.get("/articles/:subjectName", async (req, res) => {
+// app.get("/articles/:subjectName", async (req, res) => {
+//   try {
+//       const article = await Article.findOne({ subjectName: req.params.subjectName });
+
+//       if (!article) {
+//           return res.status(404).json({ message: "Article not found" });
+//       }
+
+//       res.json(article);
+//   } catch (error) {
+//       res.status(500).json({ message: "Server error", error });
+//   }
+// });
+
+app.get("/articles/:topicName", async (req, res) => {
   try {
-      const article = await Article.findOne({ subjectName: req.params.subjectName });
+      const article = await Article.findOne({ topicName: req.params.topicName });
 
       if (!article) {
           return res.status(404).json({ message: "Article not found" });
@@ -228,19 +263,40 @@ app.get("/articles/:subjectName", async (req, res) => {
 
 app.post("/articles", async (req, res) => {
   try {
-    const { topicName, title, content, subjectName } = req.body;
+    const { topicName, title, description, subjectName } = req.body;
 
-    if (!topicName || !title || !content || !subjectName) {
+    if (!topicName || !title || !description || !subjectName) {
       return res.status(400).json({ error: "Topic Name, title, Subject Name and content are required" });
     }
 
-    const newArticle = new Article({ topicName, title, content, subjectName });
+    const newArticle = new Article({ topicName, title, description, subjectName });
     await newArticle.save();
     res.status(201).json(newArticle);
   } catch (error) {
     res.status(500).json({ message: "Failed to add article", error: error.message });
   }
 });
+
+app.put("/articles/:id", async (req, res) => {
+  try {
+    const { topicName, title, description, subjectName } = req.body;
+
+    const updatedArticle = await Article.findByIdAndUpdate(
+      req.params.id,
+      { topicName, title, description, subjectName },
+      { new: true }
+    );
+
+    if (!updatedArticle) {
+      return res.status(404).json({ error: "Article not found" });
+    }
+
+    res.json(updatedArticle);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update article" });
+  }
+});
+
 
 app.delete("/articles/:id", async (req, res) => {
   try {

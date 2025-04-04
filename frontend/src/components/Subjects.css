@@ -15,15 +15,15 @@ body, html {
 }
 
 /* Add Subject Section */
-.add-article {
+.add-subject {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-bottom: 30px;
 }
 
-.add-article input,
-.add-article textarea {
+.add-subject input,
+.add-subject textarea {
   width: 100%;
   padding: 10px;
   font-size: 16px;
@@ -32,7 +32,7 @@ body, html {
   border-radius: 4px;
 }
 
-.add-article button {
+.add-subject button {
   align-self: flex-start;
   padding: 10px 20px;
   background-color: #3498db;
@@ -44,36 +44,36 @@ body, html {
 }
 
 /* Table Styling */
-.articles-table {
+.subjects-table {
   width: 100%;
   border-collapse: collapse;
   background-color: #fff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.articles-table th,
-.articles-table td {
+.subjects-table th,
+.subjects-table td {
   border: 1px solid #ddd;
   padding: 12px;
   text-align: left;
   vertical-align: top;
-  text-decoration: none;
 }
 
-.articles-table th {
+.subjects-table th {
   background-color: #f0f0f0;
   font-weight: bold;
 }
 
-.article-link {
+.subject-link {
   color: #2c3e50;
   cursor: pointer;
 }
-
-.article-link :hover{
-  color: #0a0af8;
+.subject-link:hover{
+  color: #0909ef;
   cursor: pointer;
 }
+
+
 /* Buttons */
 button {
   padding: 6px 12px;
@@ -85,7 +85,7 @@ button {
   border-radius: 4px;
 }
 
-.article-btn {
+.delete-btn {
   background-color: #e74c3c;
 }
 
@@ -95,17 +95,17 @@ button {
 
 /* Responsive for small screens */
 @media (max-width: 768px) {
-  .add-article {
+  .add-subject {
     flex-direction: column;
   }
 
-  .articles-table th,
-  .articles-table td {
+  .subjects-table th,
+  .subjects-table td {
     font-size: 14px;
     padding: 8px;
   }
 
-  .add-article button {
+  .add-subject button {
     width: 100%;
   }
 }
