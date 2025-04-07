@@ -191,7 +191,7 @@ button:disabled{
   border-radius: 12px;
   padding: 20px;
   width: 400px;
-  max-width: 90%;
+  max-width: 100%;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.3s ease-in-out;
 }
