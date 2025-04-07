@@ -484,7 +484,7 @@ const Articles = () => {
       await axios.delete(`http://localhost:5000/articles/${articleToDelete}`);
       setShowDeleteConfirm(false);
       setArticleToDelete(null);
-      fetchArticles(); // ✅ Fixed typo here
+      fetchArticles(); 
     } catch (error) {
       console.error("Error deleting article:", error);
       alert("Failed to delete article.");

@@ -24,7 +24,7 @@ mongoose.connection.once("open", () => {
 });
 
 
-// Subject Schema
+// (Subject Schema)
 const subjectSchema = new mongoose.Schema({
   subjectName: { type: String, required: true },
   description: {type: String, required: true},
@@ -33,9 +33,8 @@ const subjectSchema = new mongoose.Schema({
 
 const Subject = mongoose.model("Subjects", subjectSchema);
 
-// Topic Schema
+// (Topic Schema)
 const topicSchema = new mongoose.Schema({
-  // subjectId: { type: mongoose.Schema.Types.ObjectId, ref: "Subjects", required: true },
   topicName: { type: String, required: true },
   subjectName: { type: String, required: true },
   description: {type: String, required: true},
@@ -44,7 +43,7 @@ const topicSchema = new mongoose.Schema({
 
 const Topic = mongoose.model("Topics", topicSchema);
 
-// Article Schema
+// (Article Schema)
 const articleSchema = new mongoose.Schema({
   topicName: { type: mongoose.Schema.Types.ObjectId, ref: "Topics", required: true },
   title: { type: String, required: true },
@@ -56,7 +55,7 @@ const articleSchema = new mongoose.Schema({
 
 const Article = mongoose.model("Articles", articleSchema);
 
-// Test Route
+// (Test Route for checking connection of mongoDB)
 app.get("/test", async (req, res) => {
   try {
     res.json({ message: "MongoDB connected successfully!" });
@@ -65,7 +64,7 @@ app.get("/test", async (req, res) => {
   }
 });
 
-// CRUD for Subjects
+// (CRUD for Subjects)
 app.get("/subjects", async (req, res) => {
   try {
     const subjects = await Subject.find();
@@ -74,19 +73,6 @@ app.get("/subjects", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch subjects" });
   }
 });
-
-// app.post("/subjects", async (req, res) => {
-//   try {
-//     const { subjectName, description } = req.body;
-//     if (!subjectName || !description) return res.status(400).json({ error: "Subject name is required" });
-
-//     const newSubject = new Subject({ subjectName });
-//     await newSubject.save();
-//     res.status(201).json(newSubject);
-//   } catch (error) {
-//     res.status(500).json({ error: "Failed to add subject" });
-//   }
-// });
 
 app.post("/subjects", async (req, res) => {
   try {
@@ -125,12 +111,9 @@ app.put("/subjects/:id", async (req, res) => {
   }
 });
 
-
 app.delete("/subjects/:id", async (req, res) => {
   try {
     const subjectId = req.params.id;
-    
-    // Delete related topics and articles
     await Topic.deleteMany({ subjectId });
     await Article.deleteMany({ topicId: { $in: (await Topic.find({ subjectId })).map(t => t._id) } });
     await Subject.findByIdAndDelete(subjectId);
@@ -141,7 +124,7 @@ app.delete("/subjects/:id", async (req, res) => {
   }
 });
 
-// CRUD for Topics
+// (CRUD for Topics)
 
 app.get("/topics", async (req, res) => {
   try {
@@ -184,8 +167,6 @@ app.post("/topics", async (req, res) => {
   }
 });
 
-
-
 app.put("/topics/:id", async (req, res) => {
   try {
     const { topicName, subjectName, description } = req.body;
@@ -218,7 +199,7 @@ app.delete("/topics/:id", async (req, res) => {
   }
 });
 
-// CRUD for Articles
+// (CRUD for Articles)
 
 app.get("/articles", async (req, res) => {
   const { topicName } = req.query;
@@ -232,20 +213,6 @@ app.get("/articles", async (req, res) => {
     res.status(500).json({ message: "Error fetching articles", error: error.message });
   }
 }); 
-
-// app.get("/articles/:subjectName", async (req, res) => {
-//   try {
-//       const article = await Article.findOne({ subjectName: req.params.subjectName });
-
-//       if (!article) {
-//           return res.status(404).json({ message: "Article not found" });
-//       }
-
-//       res.json(article);
-//   } catch (error) {
-//       res.status(500).json({ message: "Server error", error });
-//   }
-// });
 
 app.get("/articles/:topicName", async (req, res) => {
   try {
@@ -297,7 +264,6 @@ app.put("/articles/:id", async (req, res) => {
   }
 });
 
-
 app.delete("/articles/:id", async (req, res) => {
   try {
     const article = await Article.findById(req.params.id);
@@ -313,6 +279,5 @@ app.delete("/articles/:id", async (req, res) => {
   }
 });
 
-// Start the Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
