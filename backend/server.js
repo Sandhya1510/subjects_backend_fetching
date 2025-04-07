@@ -214,6 +214,7 @@ app.get("/articles", async (req, res) => {
   }
 }); 
 
+
 app.get("/articles/:topicName", async (req, res) => {
   try {
       const article = await Article.findOne({ topicName: req.params.topicName });

@@ -86,7 +86,7 @@
 //   const navigate = useNavigate();
 //   const [showDescriptionInput, setShowDescriptionInput] = useState(false);
 //   const [newDescription, setNewDescription] = useState("");
-  
+
 
 
 //   useEffect(() => {
@@ -149,11 +149,11 @@
 //     try {
 //       await axios.put(`http://localhost:5000/subjects/${editId}`, {
 //         subjectName: editSubjectName,
-  
+
 //       });
 //       setEditId(null);
 //       setEditSubjectName("");
-      
+
 //       fetchSubjects();
 //     } catch (error) {
 //       console.error("Error updating subject:", error);
@@ -400,7 +400,7 @@ const Subjects = () => {
         <h2>Subjects</h2>
 
         <div className="add-subject">
-          <button onClick={() => setShowDescriptionInput(true)}>Add</button>
+          <button className="add-btn" onClick={() => setShowDescriptionInput(true)}>Add</button>
           {showDescriptionInput && (
             <div className="modal-overlay">
               <div className="modal-content">
@@ -415,10 +415,16 @@ const Subjects = () => {
                   value={newDescription}
                   onChange={(e) => setNewDescription(e.target.value)}
                   placeholder="Enter subject description"
-                  rows="4"
+                // rows="4"
                 />
                 <div className="confirmation-buttons">
-                  <button onClick={handleAddSubject}>Confirm Add</button>
+                  <button
+                    onClick={handleAddSubject}
+                    disabled={!newSubject.trim() || !newDescription.trim()}
+                  >
+                    Confirm Add
+                  </button>
+
                   <button className="cancel-btn" onClick={handleCancelAdd}>
                     Cancel
                   </button>
@@ -469,7 +475,6 @@ const Subjects = () => {
           ))}
         </tbody>
       </table>
-
       {/* Edit Modal */}
       {showEditModal && (
         <div className="modal-overlay">

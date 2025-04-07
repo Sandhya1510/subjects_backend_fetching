@@ -419,7 +419,7 @@ const Topics = () => {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <h2>Topics for {subjectName}</h2>
         <div className="add-topic">
-          <button onClick={() => setShowDescriptionInput(true)}>Add</button>
+          <button className="add-btn" onClick={() => setShowDescriptionInput(true)}>Add</button>
           {showDescriptionInput && (
             <div className="modal-overlay">
               <div className="modal-content">
@@ -437,7 +437,7 @@ const Topics = () => {
                   rows="4"
                 />
                 <div className="confirmation-buttons">
-                  <button onClick={handleAddTopic}>Confirm Add</button>
+                  <button onClick={handleAddTopic} disabled={!newTopic.trim() || !newDescription.trim()}>Confirm Add</button>
                   <button className="cancel-btn" onClick={handleCancelAdd}>Cancel</button>
                 </div>
               </div>

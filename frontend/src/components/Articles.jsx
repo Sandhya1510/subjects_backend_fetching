@@ -426,7 +426,7 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 const Articles = () => {
   const { topicName } = useParams();
   const [articles, setArticles] = useState([]);
-  const [newArticle, setNewArticle] = useState({ title: "", subjectName: "", description: "" });
+  const [newArticle, setNewArticle] = useState({ title: "", subjectName: "", description: "" });    //(This variable holds the current values of the title, subject, description)     
   const [editId, setEditId] = useState(null);
   const [editArticle, setEditArticle] = useState({ title: "", subjectName: "", description: "" });
   const [showDescriptionInput, setShowDescriptionInput] = useState(false);
@@ -484,7 +484,7 @@ const Articles = () => {
       await axios.delete(`http://localhost:5000/articles/${articleToDelete}`);
       setShowDeleteConfirm(false);
       setArticleToDelete(null);
-      fetchArticles(); 
+      fetchArticles();
     } catch (error) {
       console.error("Error deleting article:", error);
       alert("Failed to delete article.");
@@ -526,7 +526,6 @@ const Articles = () => {
         <h2>Articles for Topic: {topicName}</h2>
         <button onClick={() => setShowDescriptionInput(true)}>Add</button>
       </div>
-
       {showDescriptionInput && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -547,10 +546,12 @@ const Articles = () => {
               placeholder="Description"
               value={newArticle.description}
               onChange={(e) => setNewArticle({ ...newArticle, description: e.target.value })}
-              rows="4"
             />
             <div className="confirmation-buttons">
-              <button onClick={handleAddArticle}>Confirm Add</button>
+              <button onClick={handleAddArticle}
+                disabled={!newArticle.title.trim() || !newArticle.subjectName.trim() || !newArticle.description.trim()}>
+                Confirm Add
+              </button>
               <button className="cancel-btn" onClick={handleCancelAdd}>Cancel</button>
             </div>
           </div>
@@ -583,7 +584,6 @@ const Articles = () => {
           </div>
         </div>
       )}
-
       {loading ? (
         <p>Loading articles...</p>
       ) : (
@@ -621,7 +621,7 @@ const Articles = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="4" style={{ textAlign: "center", color: "red" }}>
+                <td colSpan="5" style={{ textAlign: "center", color: "red" }}>
                   No articles available.
                 </td>
               </tr>

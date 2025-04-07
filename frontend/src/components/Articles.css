@@ -125,6 +125,21 @@ button {
   color: #dc3545;
 }
 
+button:disabled{
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.modal-content input,
+.modal-content textarea {
+  /* width: 95%; */
+  padding: 10px 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: none;
+}
 /* Responsive for small screens */
 @media (max-width: 768px) {
   .add-article {
@@ -141,6 +156,19 @@ button {
     width: 100%;
   }
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -167,15 +195,3 @@ button {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.3s ease-in-out;
 }
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
