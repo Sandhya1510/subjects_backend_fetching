@@ -135,6 +135,23 @@ button {
   animation: fadeIn 0.3s ease-in-out;
 }
 
+.icon-btn {
+  font-size: 18px;
+  margin-right: 10px;
+  cursor: pointer;
+  color: #333;
+}
+
+.icon-btn:hover {
+  color: #007bff;
+}
+
+.delete-icon {
+  color: #dc3545;
+}
+
+
+
 @keyframes fadeIn {
   from {
     opacity: 0;
