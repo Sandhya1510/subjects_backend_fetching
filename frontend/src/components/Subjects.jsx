@@ -418,16 +418,10 @@ const Subjects = () => {
                 // rows="4"
                 />
                 <div className="confirmation-buttons">
-                  <button
-                    onClick={handleAddSubject}
-                    disabled={!newSubject.trim() || !newDescription.trim()}
-                  >
+                  <button onClick={handleAddSubject} disabled={!newSubject.trim() || !newDescription.trim()}>
                     Confirm Add
                   </button>
-
-                  <button className="cancel-btn" onClick={handleCancelAdd}>
-                    Cancel
-                  </button>
+                  <button className="cancel-btn" onClick={handleCancelAdd}>Cancel</button>
                 </div>
               </div>
             </div>
@@ -475,7 +469,7 @@ const Subjects = () => {
           ))}
         </tbody>
       </table>
-      {/* Edit Modal */}
+     
       {showEditModal && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -500,19 +494,14 @@ const Subjects = () => {
         </div>
       )}
 
-      {/* Confirm Delete Modal */}
+  
       {showDeleteConfirm && (
         <div className="modal-overlay">
           <div className="modal-content">
             <h3>Are you sure you want to delete?</h3>
             <div className="confirmation-buttons">
               <button onClick={handleDeleteConfirmed}>Yes, Delete</button>
-              <button
-                onClick={() => setShowDeleteConfirm(false)}
-                className="cancel-btn"
-              >
-                Cancel
-              </button>
+              <button onClick={() => setShowDeleteConfirm(false)} className="cancel-btn"> Cancel</button>
             </div>
           </div>
         </div>
